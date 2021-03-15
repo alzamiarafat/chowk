@@ -19,11 +19,10 @@ Coded by www.creative-tim.com
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('argonfront') }}/img/apple-icon.png">
     <link rel="icon" type="image/png" href="{{ asset('argonfront') }}/img/favicon.png">
-    {{--<meta name="_token" content="{{ csrf_token() }}">--}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta property="og:image" content="{{ config('global.site_logo') }}">
-    <title>{{ config('global.site_name','Chowk') }}</title>
-    {{--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">--}}
+    <title>{{ config('global.site_name','FoodTiger') }}</title>
+
     @notifyCss
 
     <!--     Fonts and icons     -->
@@ -42,7 +41,7 @@ Coded by www.creative-tim.com
 
     <!-- Select2 -->
     <link type="text/css" href="{{ asset('custom') }}/css/select2.min.css" rel="stylesheet">
-    
+
 
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -57,6 +56,7 @@ Coded by www.creative-tim.com
         </script>
     @endif
 
+  @include('googletagmanager::head')
   @yield('head')
   @laravelPWA
   
@@ -90,9 +90,8 @@ Coded by www.creative-tim.com
     @else
         @include('layouts.menu.top_justlogo')
     @endif
+
     <!-- End Navbar -->
-    
-    
     <div class="wrapper">
         @yield('content')
         @include('layouts.navbars.cartSideMenu')
@@ -104,7 +103,7 @@ Coded by www.creative-tim.com
 
     <!--   Core JS Files   -->
     <script src="{{ asset('argonfront') }}/js/core/jquery.min.js" type="text/javascript"></script>
-     <script src="{{ asset('argonfront') }}/js/core/popper.min.js" type="text/javascript"></script>
+    <script src="{{ asset('argonfront') }}/js/core/popper.min.js" type="text/javascript"></script>
     <script src="{{ asset('argonfront') }}/js/core/bootstrap.min.js" type="text/javascript"></script>
     <script src="{{ asset('argonfront') }}/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 
@@ -117,7 +116,7 @@ Coded by www.creative-tim.com
 
     <script src="{{ asset('argonfront') }}/js/plugins/datetimepicker.js" type="text/javascript"></script>
     <script src="{{ asset('argonfront') }}/js/plugins/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
     <!-- Control Center for Argon UI Kit: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('argonfront') }}/js/argon-design-system.js?v=1.2.0" type="text/javascript"></script>
 
@@ -171,7 +170,6 @@ Coded by www.creative-tim.com
 
     <!-- Custom JS defined by admin -->
     <?php echo file_get_contents(base_path('public/byadmin/front.js')) ?>
-    {{--Script for SSL Commerze--}}
 
 </body>
 

@@ -16,7 +16,6 @@
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-        <link href='https://fonts.googleapis.com/css?family=Libre Barcode 39' rel='stylesheet'>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
@@ -46,15 +45,6 @@
 
         <!-- Custom CSS defined by admin -->
         <link type="text/css" href="{{ asset('byadmin') }}/back.css" rel="stylesheet">
-
-
-        <!--   Core JS Files   -->
-        <script src="{{ asset('argonfront') }}/js/core/jquery.min.js" type="text/javascript"></script>
-        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
-        <script src="{{ asset('argonfront') }}/js/core/jquery-ui-theme.css" type="text/javascript"></script>
-        <script src="{{ asset('argonfront') }}/js/core/popper.min.js" type="text/javascript"></script>
-        {{--<script src="{{ asset('argonfront') }}/js/core/bootstrap.min.js" type="text/javascript"></script>--}}
-        <script src="{{ asset('argonfront') }}/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 
 
 
@@ -106,7 +96,6 @@
          <!-- Custom js -->
         <script src="{{ asset('custom') }}/js/mresto.js"></script>
         <!-- AJAX -->
-       
 
         <!-- SELECT2 -->
         <script src="{{ asset('custom') }}/js/select2.js"></script>
@@ -119,13 +108,10 @@
         <!-- All in one -->
         <script src="{{ asset('custom') }}/js/js.js?id={{ config('config.version')}}"></script>
 
-        <script src="{{ asset('custom') }}/js/customOrder.js"></script>
 
 
 
-
-
-        <!-- Import Vue -->
+         <!-- Import Vue -->
         <script src="{{ asset('vendor') }}/vue/vue.js"></script>
 
         <!-- Import AXIOS --->
@@ -144,8 +130,6 @@
             var PUSHER_APP_KEY = "{{ config('broadcasting.connections.pusher.key') }}";
             var PUSHER_APP_CLUSTER = "{{ config('broadcasting.connections.pusher.options.cluster') }}";
         </script>
-
-        <script src="{{ asset('custom') }}/js/cartFunctions.js"></script>
 
         <!-- OneSignal -->
         @if(strlen( config('settings.onesignal_app_id'))>4)

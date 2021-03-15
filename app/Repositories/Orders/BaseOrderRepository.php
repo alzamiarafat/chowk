@@ -137,8 +137,18 @@ class BaseOrderRepository extends Controller
             $this->order->delivery_method=$expeditionsTypes[$this->expedition];  
 
             //Client
-            if(auth()->user()){
+            // if(auth()->user()){
+            //     $this->order->client_id=auth()->user()->id;
+            // }
+            // MEHRAAB
+            if(auth()->user()->hasRole('admin')){
+                $this->order->client_id=4;
+                
+            }
+            else{
+                if(auth()->user()){
                 $this->order->client_id=auth()->user()->id;
+            }
             }
 
             //TODO Set initials like VAT, prices etc to 0
@@ -147,6 +157,10 @@ class BaseOrderRepository extends Controller
 
             //Save order
             $this->order->save();
+
+            //Save order custom fields
+            $this->order->setMultipleConfig($this->request->customFields);
+
 
         }else{
             //Order is already initialized - in case of continues ordering
@@ -208,22 +222,12 @@ class BaseOrderRepository extends Controller
         //After we have updated the list of items, we need to update the order price
         $order_price=0;
         $total_order_vat=0;
-        $total_price=0;
-        $coupon_price=$this->request->coupon_price;
-        $total_price=$this->request->total_price;
-        $delivery_charge=$this->request->addressID;
         foreach ($this->order->items()->get() as $key => $item) {
             $order_price+=$item->pivot->qty*$item->pivot->variant_price;
-            $total_order_vat+=$item->pivot->qty*$item->pivot->vatvalue;
+            $total_order_vat+=$item->pivot->qty*($item->pivot->vatvalue/100);
         }
-        $this->order->order_price= $order_price;
+        $this->order->order_price=$order_price;
         $this->order->vatvalue=$total_order_vat;
-        $this->order->coupon_price=$coupon_price;
-
-//        $this->order->total_price=$total_price;
-        $this->order->total_price=$total_price;
-//        $this->ORDER->total_price=
-//        $this->request->total_price=
 
         //Update the order with the item
         $this->order->update();

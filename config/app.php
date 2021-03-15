@@ -219,6 +219,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Spatie\Geocoder\GeocoderServiceProvider::class,
         Spatie\CookieConsent\CookieConsentServiceProvider::class,
+        Spatie\EloquentSortable\EloquentSortableServiceProvider::class,
         Unicodeveloper\Paystack\PaystackServiceProvider::class,
 
     ],

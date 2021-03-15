@@ -40,7 +40,21 @@
                         @include('partials.flash')
                     </div>
                     <div class="card-body">
-                        @foreach ($categories as $category)
+                        @if(count($categories)==0)
+                            <div class="col-lg-3" >
+                                <a  data-toggle="modal" data-target="#modal-items-category" data-toggle="tooltip" data-placement="top" title="{{ __('Add new category')}}">
+                                    <div class="card">
+                                        <img class="card-img-top" src="{{ asset('images') }}/default/add_new_item.jpg" alt="...">
+                                        <div class="card-body">
+                                            <h3 class="card-title text-primary text-uppercase">{{ __('Add first category') }}</h3> 
+                                        </div>
+                                    </div>
+                                </a>
+                                <br />
+                            </div>
+                        @endif
+                       
+                        @foreach ($categories as $index => $category)
                         @if($category->active == 1)
                         <div class="alert alert-default">
                             <div class="row">
@@ -71,6 +85,9 @@
                                         <button class="btn btn-icon btn-1 btn-sm btn-warning" type="button" id="edit" data-toggle="modal" data-target="#modal-edit-category" data-toggle="tooltip" data-placement="top" title="{{ __('Edit category') }} {{ $category->name }}" data-id="<?= $category->id ?>" data-name="<?= $category->name ?>" >
                                             <span class="btn-inner--icon"><i class="fa fa-edit"></i></span>
                                         </button>
+
+                                       
+
                                         <form action="{{ route('categories.destroy', $category) }}" method="post">
                                             @csrf
                                             @method('delete')
@@ -78,6 +95,26 @@
                                                 <span class="btn-inner--icon"><i class="fa fa-trash"></i></span>
                                             </button>
                                         </form>
+
+                                        @if(count($categories)>1)
+                                            <div style="margin-left: 10px; margin-right: 10px">|</div>
+                                        @endif
+
+                                         <!-- UP -->
+                                         @if ($index!=0)
+                                            <a href="{{ route('items.reorder',['up'=>$category->id]) }}"  class="btn btn-icon btn-1 btn-sm btn-success" >
+                                                <span class="btn-inner--icon"><i class="fas fa-arrow-up"></i></span>
+                                            </a>
+                                         @endif
+                                         
+
+                                        <!-- DOWN -->
+                                        @if ($index+1!=count($categories))
+                                            <a href="{{ route('items.reorder',['up'=>$categories[$index+1]->id]) }}" class="btn btn-icon btn-1 btn-sm btn-success">
+                                                <span class="btn-inner--icon"><i class="fas fa-arrow-down"></i></span>
+                                            </a>
+                                        @endif
+
                                     </div>
                                 </div>
                             </div>
@@ -87,152 +124,48 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-12">
                                 <div class="row row-grid">
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Product Name</th>
-      <th scope="col">Regular Price</th>
-      <th scope="col">Discount</th>
-      <th scope="col">New Price</th>
-      <th scope="col">Status</th>
-      <th scope="col">Stock</th>
-      <th scope="col-2">Modify</th>
-    </tr>
-  </thead>
-  <tbody>
-      @foreach ( $category->items as $item)
-    <tr>
-        <!--name-->
-      <td>{{ $item->name }}</td>
-      <!--regular price-->
-      <td>৳ {{$item->regular_price}}</td>
-      <!--Discount-->
-      <td>
-          @if($item->discount_type==0|| $item->discount_type==1)
-           {{$item->discount}}</td>
-          @else
-           <!--($item->price-($item->price-$item->discount), config('settings.cashier_currency'),config('settings.do_convertion'))-->
-           {{$item->discount}} %
-           @endif
-           </td>
-           
-          
-         <!--New Price-->
-      <td>
-      @money($item->price, config('settings.cashier_currency'),config('settings.do_convertion'))
-      </td>
-<!--Status-->
-      <td>
-        <p class="text-sm">
-            @if($item->available == 1)
-            <span class="text-success">{{ __("AVAILABLE") }}</span>
-            @else
-            <span class="text-danger">{{ __("UNAVAILABLE") }}</span>
-            @endif
-        </p>
-      </td>
-      <!--Stock-->
-      <td>
-          <!--@if($item->discount_type==0)-->
-          <!--{{$item->price}}-->
-          <!--@elseif($item->discount_type==1)-->
-          <!--@money($item->price-$item->discount, config('settings.cashier_currency'),config('settings.do_convertion'))-->
-          <!--@else-->
-          <!--@money($item->price-(($item->price*$item->discount)/100), config('settings.cashier_currency'),config('settings.do_convertion'))-->
-          <!--@endif-->
-      </td>
-      <!--MODIFY-->
-      <td>
-          <div class="row">
-        <a href="{{ route('items.edit', $item) }}" >
-            <button class="btn btn-icon btn-1 btn-sm btn-primary bg-success" type="button"  title="Edit Item {{ $item->name }}" >
-            <span class="btn-inner--icon"><i class="fa fa-edit"></i></span>
-            </button>
-        </a>
-        <a>
-            <form action="{{ route('items.destroy', $item) }}" method="post">
-            @csrf
-            @method('delete')
-            <button class="btn btn-icon btn-1 btn-sm btn-danger ml-1" type="button"  title="Delete Item {{ $item->name }}" onclick="confirm('{{ __("Are you sure you want to delete this item?") }}') ? this.parentElement.submit() : ''">
-                <span class="btn-inner--icon"><i class="fa fa-trash"></i></span>
-            </button>
-            </form>
-        </a>
-        </div>
-        </td>
-    </tr>
-     @endforeach
-  </tbody>
-</table>
-                                    
-                                    
-                                    <!--@foreach ( $category->items as $item)-->
-                                    <!--    <div class="col-lg-2">-->
-                                    <!--        <a href="{{ route('items.edit', $item) }}">-->
-                                    <!--            <div class="card">-->
-                                    <!--                <img class="card-img-top" src="{{ $item->logom }}" alt="...">-->
-                                    <!--                <div class="card-body">-->
-                                    <!--                    <h4 class="card-title text-primary text-uppercase">{{ $item->name }}</h4>-->
-                                    <!--                    <p class="card-text description mt-3">{{ $item->description }}</p>-->
-                                    <!--                    @if($item->discount>0)-->
-                                    <!--                    <span class="badge badge-danger badge-pill"><del>@money($item->price, config('settings.cashier_currency'),config('settings.do_convertion'))</del></span>-->
-                                    <!--                    <span class="badge badge-success badge-pill">@money($item->price-$item->discount, config('settings.cashier_currency'),config('settings.do_convertion'))</span></br>-->
-                                    <!--                    <span class="badge badge-primary badge-pill">Discount Amount: @money($item->price-($item->price-$item->discount), config('settings.cashier_currency'),config('settings.do_convertion'))</span>-->
-                                    <!--                    @endif-->
-                                    <!--                     @if($item->discount==0||$item->discount==NULL)-->
-                                    <!--                    <span class="badge badge-primary badge-pill">@money($item->price, config('settings.cashier_currency'),config('settings.do_convertion'))</span>-->
-                                    <!--                    @endif-->
-                                    <!--                    <p class="mt-3 mb-0 text-sm">-->
-                                    <!--                        @if($item->available == 1)-->
-                                    <!--                        <span class="text-success mr-2">{{ __("AVAILABLE") }}</span>-->
-                                    <!--                        @else-->
-                                    <!--                        <span class="text-danger mr-2">{{ __("UNAVAILABLE") }}</span>-->
-                                    <!--                        @endif-->
-                                    <!--                    </p>-->
-                                    <!--                </div>-->
-                                    <!--            </div>-->
-                                    <!--            <br/>-->
-                                    <!--        </a>-->
-                                    <!--    </div>-->
-                                    <!--@endforeach-->
+                                    @foreach ( $category->items as $item)
+                                        <div class="col-lg-3">
+                                            <a href="{{ route('items.edit', $item) }}">
+                                                <div class="card">
+                                                    <img class="card-img-top" src="{{ $item->logom }}" alt="...">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title text-primary text-uppercase">{{ $item->name }}</h3>
+                                                        <p class="card-text description mt-3">{{ $item->description }}</p>
+
+                                                        <span class="badge badge-primary badge-pill">@money($item->price, config('settings.cashier_currency'),config('settings.do_convertion'))</span>
+
+                                                        <p class="mt-3 mb-0 text-sm">
+                                                            @if($item->available == 1)
+                                                            <span class="text-success mr-2">{{ __("AVAILABLE") }}</span>
+                                                            @else
+                                                            <span class="text-danger mr-2">{{ __("UNAVAILABLE") }}</span>
+                                                            @endif
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <br/>
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                    <div class="col-lg-3" >
+                                        <a   data-toggle="modal" data-target="#modal-new-item" data-toggle="tooltip" data-placement="top" href="javascript:void(0);" onclick=(setSelectedCategoryId({{ $category->id }}))>
+                                            <div class="card">
+                                               
+                                                
+                                                <img class="card-img-top" src="{{ asset('images') }}/default/add_new_item.jpg" alt="...">
+                                                <div class="card-body">
+                                                    <h3 class="card-title text-primary text-uppercase">{{ __('Add item') }}</h3>
+                                                   
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <br />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         @endif
-                        
-                        <!--@if($category->active == 1)-->
-                        <!--<div class="row justify-content-center">-->
-                        <!--    <div class="col-lg-12">-->
-                        <!--        <div class="row row-grid">-->
-                        <!--            @foreach ( $category->items as $item)-->
-                        <!--                <div class="col-lg-3">-->
-                        <!--                    <a href="{{ route('items.edit', $item) }}">-->
-                        <!--                        <div class="card">-->
-                        <!--                            <img class="card-img-top" src="{{ $item->logom }}" alt="...">-->
-                        <!--                            <div class="card-body">-->
-                        <!--                                <h3 class="card-title text-primary text-uppercase">{{ $item->name }}</h3>-->
-                        <!--                                <p class="card-text description mt-3">{{ $item->description }}</p>-->
-
-                        <!--                                <span class="badge badge-primary badge-pill">@money($item->price, config('settings.cashier_currency'),config('settings.do_convertion'))</span>-->
-
-                        <!--                                <p class="mt-3 mb-0 text-sm">-->
-                        <!--                                    @if($item->available == 1)-->
-                        <!--                                    <span class="text-success mr-2">{{ __("AVAILABLE") }}</span>-->
-                        <!--                                    @else-->
-                        <!--                                    <span class="text-danger mr-2">{{ __("UNAVAILABLE") }}</span>-->
-                        <!--                                    @endif-->
-                        <!--                                </p>-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
-                        <!--                        <br/>-->
-                        <!--                    </a>-->
-                        <!--                </div>-->
-                        <!--            @endforeach-->
-                        <!--        </div>-->
-                        <!--    </div>-->
-                        <!--</div>-->
-                        <!--@endif-->
-                        
                         @endforeach
                     </div>
                 </div>

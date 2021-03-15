@@ -7,7 +7,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-
             </div>
             <div class="modal-body p-0">
                 <div class="card bg-secondary shadow border-0">
@@ -129,7 +128,6 @@
                                     </span>
                                 @endif
                             </div>
-                            
                             <div class="form-group{{ $errors->has('item_price') ? ' has-danger' : '' }}">
                                 <input class="form-control" name="item_price" id="item_price" placeholder="{{ __('Item Price') }} ..." type="number" step="any" required>
                                 @if ($errors->has('item_price'))
@@ -138,62 +136,6 @@
                                     </span>
                                 @endif
                             </div>
-                            
-                            <!--<div class="">-->
-                                 
-                            <!--     <div class="bs-example">-->
-                            <!--         <span>Discount type: </span>-->
-                            <!--        <input type="radio" name="group1" value="1" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"/> Flat-->
-                            <!--        <input type="radio" name="group1" value="2" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"/> Percent-->
-                                    
-                                    
-                            <!--        <div class="panel-group" id="accordion">-->
-                            <!--            <div class="panel panel-default mt-2">-->
-                            <!--                <div id="collapseOne" class="panel-collapse collapse">-->
-                            <!--                    <div class="panel-body">-->
-                            <!--                        <div class="form-group{{ $errors->has('discount') ? ' has-danger' : '' }}">-->
-                            <!--                            <input class="form-control" name="discount" id="discount" placeholder="{{ __('Flat Discount') }} ..." type="number" step="any" >-->
-                            <!--                            @if ($errors->has('discount'))-->
-                            <!--                                <span class="invalid-feedback" role="alert">-->
-                            <!--                                    <strong>{{ $errors->first('discount') }}</strong>-->
-                            <!--                                </span>-->
-                            <!--                            @endif-->
-                            <!--                        </div>-->
-                            <!--                    </div>-->
-                            <!--                </div>-->
-                            <!--            </div>-->
-                            <!--            <div class="panel panel-default mt-2">-->
-                                            
-                            <!--                <div id="collapseTwo" class="panel-collapse collapse">-->
-                            <!--                    <div class="panel-body">-->
-                            <!--                         <div class="form-group{{ $errors->has('discount') ? ' has-danger' : '' }}">-->
-                            <!--                            <input class="form-control" name="discount" id="discount" placeholder="{{ __('Percent Discount') }} ..." type="number" step="any" >-->
-                            <!--                            @if ($errors->has('discount'))-->
-                            <!--                                <span class="invalid-feedback" role="alert">-->
-                            <!--                                    <strong>{{ $errors->first('discount') }}</strong>-->
-                            <!--                                </span>-->
-                            <!--                            @endif-->
-                            <!--                        </div>-->
-                            <!--                    </div>-->
-                            <!--                </div>-->
-                            <!--            </div>-->
-                                       
-                            <!--        </div>-->
-                            <!--    </div>-->
-                            <!--</div>-->
-                        <input type="radio" name="discount_type" value="0" checked> No Discount 
-                        <input type="radio" name="discount_type" value="1"> Flat 
-                        <input type="radio" name="discount_type" value="2"> Percent 
-                            
-                            <div class=" mt-3 form-group{{ $errors->has('discount') ? ' has-danger' : '' }}">
-                                <input class="form-control" name="discount" id="p_discount" placeholder="{{ __('Discount') }} ..." type="number" step="any" >
-                                @if ($errors->has('discount'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('discount') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-
                             <div class="form-group text-center{{ $errors->has('item_image') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="item_image">{{ __('Item Image') }}</label>
                                 <div class="text-center">
@@ -201,15 +143,15 @@
                                         <div class="fileinput-preview img-thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
                                             <img src="https://www.fastcat.com.ph/wp-content/uploads/2016/04/dummy-post-square-1-768x768.jpg" width="200px" height="150px" alt="..."/>
                                         </div>
-                                        <div>
+                                    <div>
                                     <span class="btn btn-outline-secondary btn-file">
                                     <span class="fileinput-new">{{ __('Select image') }}</span>
                                     <span class="fileinput-exists">{{ __('Change') }}</span>
                                         <input type="file" name="item_image" accept="image/x-png,image/gif,image/jpeg">
                                     </span>
-                                            <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">{{ __('Remove') }}</a>
-                                        </div>
-                                    </div>
+                                    <a href="#" class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput">{{ __('Remove') }}</a>
+                                </div>
+                                </div>
                                 </div>
                             </div>
                             <input name="category_id" id="category_id" type="hidden" required>
@@ -236,19 +178,19 @@
                 <div class="card bg-secondary shadow border-0">
                     <div class="card-body px-lg-5 py-lg-5">
                         <div class="col-md-10 offset-md-1">
-                            <form role="form" method="post" action="{{ route('import.items') }}" enctype="multipart/form-data">
-                                @csrf
-                                <div class="form-group text-center{{ $errors->has('item_image') ? ' has-danger' : '' }}">
-                                    <label class="form-control-label" for="items_excel">{{ __('Import your file') }}</label>
-                                    <div class="text-center">
-                                        <input type="file" class="form-control form-control-file" name="items_excel" accept=".csv, .ods, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
-                                    </div>
-                                </div>
-                                <input name="res_id" id="res_id" type="hidden" required>
+                        <form role="form" method="post" action="{{ route('import.items') }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group text-center{{ $errors->has('item_image') ? ' has-danger' : '' }}">
+                                <label class="form-control-label" for="items_excel">{{ __('Import your file') }}</label>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary my-4">{{ __('Save') }}</button>
+                                    <input type="file" class="form-control form-control-file" name="items_excel" accept=".csv, .ods, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
                                 </div>
-                            </form>
+                            </div>
+                            <input name="res_id" id="res_id" type="hidden" required>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary my-4">{{ __('Save') }}</button>
+                            </div>
+                        </form>
                         </div>
                     </div>
                 </div>

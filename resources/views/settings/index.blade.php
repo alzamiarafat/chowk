@@ -72,6 +72,7 @@
                                         <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#cssjs" role="tab" aria-controls="tabs-icons-text-2" aria-selected="false"><i class="ni ni-palette mr-2"></i>{{ __ ('CSS & JS') }}</a>
                                     </li>
 
+                                   
 
 
 
@@ -168,9 +169,15 @@
 
                                     @foreach ($envConfigs as $groupConfig)
                                         <div class="tab-pane fade" id="{{ $groupConfig['slug'] }}" role="tabpanel" aria-labelledby="{{ $groupConfig['slug'] }}">
-
+                                            
                                             <div class="">
                                                 @include('partials.fields',['fields'=>$groupConfig['fields']])
+                                                @if ($groupConfig['slug']=="setup")
+                                                    @include('partials.fields',['fields'=>[
+                                                    ['separator'=>"Custom fields on order", 'additionalInfo'=>'Please check docs on how to define the custom fields on order.', 'name'=>'Custom fileds in JSON format','required'=>false,'placeholder'=>'', 'id'=>'order_fields', 'ftype'=>'textarea','type'=>"textarea",'value'=>$settings->order_fields]
+                                                    ]
+                                                    ])
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach

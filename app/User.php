@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use Spatie\Permission\Traits\HasRoles;
 use Twilio\Rest\Client;
+use App\Traits\HasConfig;
 
 class User extends Authenticatable
 {
@@ -18,6 +19,9 @@ class User extends Authenticatable
     use Notifiable;
     use HasRoles;
     use Billable;
+    use HasConfig;
+
+    protected $modelName="App\User";
 
     /**
      * The attributes that are mass assignable.

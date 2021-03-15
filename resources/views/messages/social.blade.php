@@ -55,6 +55,16 @@ foreach ($order->items()->get() as $key => $item) {
 {{ __('Pickup time').": ".$order->getTimeFormatedAttribute() }}
 @endif
 
+<?php   //Custom fields ?>
+<?php $custom_data=$order->getAllConfigs(); ?>
+@if(count($custom_data)>0)
+{{ __(config('settings.label_on_custom_fields')) }}
+@foreach ($custom_data as $keyCutom => $itemValue)
+{{ __( "custom.".$keyCutom) }}: {{ $itemValue }}
+@endforeach
+@endif
+
+
 {{ $order->restorant->name." ".__('will confirm your order upon receiving the message.') }}
 
 

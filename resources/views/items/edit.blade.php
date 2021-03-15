@@ -23,15 +23,15 @@
 
 
                                 @if ($item->has_variants)
-                                    <div class="form-group">
+                                <div class="form-group">
 
-                                        <label for="variantsSelector">{{ __('Select variant or leave empty for all') }}</label><br />
-                                        <select name="variantsSelector[]" multiple="multiple" class="form-control noselecttwo"  id="variantsSelector">
-                                            @foreach ($item->variants as $variant)
-                                                <option id="var{{$variant->id}}" value="{{$variant->id}}">{{ "#".$variant->id.": ".$variant->optionsList }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                    <label for="variantsSelector">{{ __('Select variant or leave empty for all') }}</label><br />
+                                    <select name="variantsSelector[]" multiple="multiple" class="form-control noselecttwo"  id="variantsSelector">
+                                        @foreach ($item->variants as $variant)
+                                            <option id="var{{$variant->id}}" value="{{$variant->id}}">{{ "#".$variant->id.": ".$variant->optionsList }}</option>
+                                        @endforeach
+                                    </select>
+                                  </div>
                                 @endif
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary my-4">{{ __('Save') }}</button>
@@ -101,32 +101,13 @@
                                         </div>
                                         <div class="form-group{{ $errors->has('item_price') ? ' has-danger' : '' }}">
                                             <label class="form-control-label" for="item_price">{{ __('Item Price') }}</label>
-                                            <input type="number" step="any" name="item_price" id="item_price" class="form-control form-control-alternative{{ $errors->has('item_price') ? ' is-invalid' : '' }}" placeholder="{{ __('Price') }}" value="{{ old('item_price', $item->regular_price) }}" required autofocus>
+                                            <input type="number" step="any" name="item_price" id="item_price" class="form-control form-control-alternative{{ $errors->has('item_price') ? ' is-invalid' : '' }}" placeholder="{{ __('Price') }}" value="{{ old('item_price', $item->price) }}" required autofocus>
                                             @if ($errors->has('item_price'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('item_price') }}</strong>
                                                 </span>
                                             @endif
                                         </div>
-
-                                        {{--added discount field by rakib--}}
-                                        
-                                        
-                                        
-                                        <input type="radio" name="discount_type" value="0" {{ ($item->discount_type==0) ? 'checked':'' }} > No Discount 
-                                        <input type="radio" name="discount_type" value="1" {{ ($item->discount_type==1) ? 'checked':'' }}  > Flat 
-                                        <input type="radio" name="discount_type" value="2" {{ ($item->discount_type==2) ? 'checked':'' }}  > Percent 
-
-                                        <div class="form-group{{ $errors->has('discount') ? ' has-danger' : '' }}">
-                                            <label class="form-control-label" for="discount">{{ __('Discount') }}</label>
-                                            <input type="number" step="any" name="discount" id="discount" class="form-control form-control-alternative{{ $errors->has('discount') ? ' is-invalid' : '' }}" placeholder="{{ __('Discount') }}" value="{{ old('discount', $item->discount) }}"  autofocus>
-                                            @if ($errors->has('discount'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('discount') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-
                                         @include('partials.input',['id'=>'vat','name'=>__('VAT percentage( calculated into item price )'),'placeholder'=>__('Item VAT percentage'),'value'=>$item->vat,'required'=>false,'type'=>'number'])
                                         <?php $image=['name'=>'item_image','label'=>__('Item Image'),'value'=> $item->logom,'style'=>'width: 290px; height:200']; ?>
                                         @include('partials.images',$image)
@@ -137,7 +118,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>
+                                   <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>
                                 </div>
                             </form>
                             <div class="text-center">
@@ -147,28 +128,28 @@
                                     <button type="button" class="btn btn-danger mt-4" onclick="confirm('{{ __("Are you sure you want to delete this item?") }}') ? this.parentElement.submit() : ''">{{ __('Delete') }}</button>
                                 </form>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-6 mb-6 mb-xl-0">
-                <br/>
-
-                @if ($item->has_variants==1)
-                    <div class="card card-profile shadow">
-                        <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <h5 class="h3 mb-0">{{ __('Variants') }}</h5>
-                                </div>
-                                <div class="col-6 text-right">
-                                    <a class="btn btn-secondary btn-sm" href="{{  route('items.options.index',$item->id)}}">{{ __('Edit Options')}}</a>
-                                    <a class="btn btn-success btn-sm" href="{{  route('items.variants.create',['item'=>$item->id])}}">{{ __('Add Variant')}}</a>
-                                </div>
-
                             </div>
                         </div>
-                        <div class="card-body">
+                    </div>
+            </div>
+            <div class="col-xl-6 mb-6 mb-xl-0">
+                    <br/>
+
+                    @if ($item->has_variants==1)
+                        <div class="card card-profile shadow">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <h5 class="h3 mb-0">{{ __('Variants') }}</h5>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <a class="btn btn-secondary btn-sm" href="{{  route('items.options.index',$item->id)}}">{{ __('Edit Options')}}</a>
+                                        <a class="btn btn-success btn-sm" href="{{  route('items.variants.create',['item'=>$item->id])}}">{{ __('Add Variant')}}</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="card-body">
 
 
 
@@ -176,77 +157,77 @@
                             <div class="table-responsive">
                                 <table class="table align-items-center table-flush">
                                     <thead class="thead-light">
-                                    @yield('thead')
+                                        @yield('thead')
                                     </thead>
                                     <tbody>
-                                    @yield('tbody')
+                                        @yield('tbody')
                                     </tbody>
                                 </table>
                             </div>
 
 
+                            </div>
+
                         </div>
 
-                    </div>
-
-                    <br />
-                @endif
-                <div class="card card-profile shadow">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h5 class="h3 mb-0">{{ __('Extras') }}</h5>
-                            </div>
-                            <div class="col-4 text-right">
+                        <br />
+                    @endif
+                    <div class="card card-profile shadow">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <h5 class="h3 mb-0">{{ __('Extras') }}</h5>
+                                </div>
+                                <div class="col-4 text-right">
                                 <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-new-extras" onClick=(setRestaurantId({{ $restorant_id }}))>{{ __('Add') }}</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table align-items-center">
-                            <thead class="thead-light">
-                            <tr>
-                                <th scope="col" class="sort" data-sort="name">{{ __('Name') }}</th>
-                                <th scope="col" class="sort" data-sort="name">{{ __('Price') }}</th>
-                                @if ($item->has_variants==1)<th scope="col">{{ __('For') }}</th>@endif
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            <tbody class="list">
-                            <script>
-                                var extras=<?php echo $item->extras->load('variants') ?>;
-                                console.log(extras);
-                            </script>
-                            @foreach($item->extras as $extra)
-                                <tr>
-                                    <th scope="row">{{ $extra->name }}</th>
-                                    <td class="budget">@money( $extra->price, config('settings.cashier_currency'),config('settings.do_convertion'))</td>
-                                    @if ($item->has_variants==1)<td class="budget">{{ $extra->extra_for_all_variants?__('All variants'):__('Selected') }}</td>@endif
-                                    <td class="text-right">
-                                        <div class="dropdown">
-                                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <div class="table-responsive">
+                                <table class="table align-items-center">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col" class="sort" data-sort="name">{{ __('Name') }}</th>
+                                            <th scope="col" class="sort" data-sort="name">{{ __('Price') }}</th>
+                                            @if ($item->has_variants==1)<th scope="col">{{ __('For') }}</th>@endif
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="list">
+                                        <script>
+                                            var extras=<?php echo $item->extras->load('variants') ?>;
+                                            console.log(extras);
+                                        </script>
+                                        @foreach($item->extras as $extra)
+                                            <tr>
+                                                <th scope="row">{{ $extra->name }}</th>
+                                                <td class="budget">@money( $extra->price, config('settings.cashier_currency'),config('settings.do_convertion'))</td>
+                                                @if ($item->has_variants==1)<td class="budget">{{ $extra->extra_for_all_variants?__('All variants'):__('Selected') }}</td>@endif
+                                                <td class="text-right">
+                                                    <div class="dropdown">
+                                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
 
-                                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal-new-extras" onClick=(setExtrasId({{ $extra->id }}))>Edit</button>
-                                                <form action="{{ route('extras.destroy',[$item, $extra]) }}" method="post">
-                                                    @csrf
-                                                    @method('delete')
+                                                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal-new-extras" onClick=(setExtrasId({{ $extra->id }}))>Edit</button>
+                                                            <form action="{{ route('extras.destroy',[$item, $extra]) }}" method="post">
+                                                                @csrf
+                                                                @method('delete')
 
-                                                    <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this extras?") }}') ? this.parentElement.submit() : ''">
-                                                        {{ __('Delete') }}
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                                                <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this extras?") }}') ? this.parentElement.submit() : ''">
+                                                                    {{ __('Delete') }}
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                     </div>
-                </div>
 
 
             </div>
@@ -271,17 +252,17 @@
             //$("#variantsSelector").multiselect('refresh');
             extras.forEach(element => {
 
-                    if(element.id==id){
-                        console.log(element.variants)
-                        $('#modal-title-new-extras').html("Edit option")
-                        $('#extras_id').val(element.id);
-                        $('#extras_name').val(element.name);
-                        $('#extras_price').val(element.price);
-                        element.variants.forEach(variant => {
-                            $('#var'+variant.id).attr('selected',true)
-                        });
+                if(element.id==id){
+                    console.log(element.variants)
+                    $('#modal-title-new-extras').html("Edit option")
+                    $('#extras_id').val(element.id);
+                    $('#extras_name').val(element.name);
+                    $('#extras_price').val(element.price);
+                    element.variants.forEach(variant => {
+                        $('#var'+variant.id).attr('selected',true)
+                    });
 
-                    }
+                 }
                 }
             );
         }

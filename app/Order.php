@@ -5,10 +5,14 @@ namespace App;
 use App\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasConfig;
 
 class Order extends Model
 {
     use HasFactory;
+    use HasConfig;
+
+    protected $modelName="App\Order";
 
     protected $table = 'orders';
 
@@ -47,6 +51,27 @@ class Order extends Model
     public function laststatus()
     {
         return $this->belongsToMany(\App\Status::class, 'order_has_status', 'order_id', 'status_id')->withPivot('user_id', 'created_at', 'comment')->orderBy('order_has_status.id', 'DESC')->limit(1);
+    }
+
+    public function getExpeditionType(){
+        //FT
+        $delivery="";
+        if(config('app.isft')){
+            $delivery=$this->delivery_method==1?__('Delivery'):__('Pickup');
+        }
+        //QR or WP
+        if(config('app.isqrsaas')){
+            if(config('settings.is_whatsapp_ordering_mode')){
+                //WP
+                $delivery=$this->delivery_method==1?__('Delivery'):__('Pickup');
+            }else{
+                //QR
+                $delivery=$this->delivery_method==3?__('Dine in'):__('Takeaway');
+            }
+        }
+
+        return $delivery;
+        
     }
 
     public function stakeholders()

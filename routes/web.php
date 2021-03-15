@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\SslCommerzPaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'FrontEndController@index')->name('front');
-
 Route::get('/'.config('settings.url_route').'/{alias}', 'FrontEndController@restorant')->name('vendor');
-
 Route::get('/city/{city}', 'FrontEndController@showStores')->name('show.stores');
 Route::get('/lang', 'FrontEndController@langswitch')->name('lang.switch');
 
@@ -91,8 +88,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::put('coupons/{coupon}', 'CouponsController@update')->name('coupons.update');
             Route::get('coupons/del/{coupon}', 'CouponsController@destroy')->name('coupons.delete');
 
-//            Route::get('coupons/apply', 'CouponsController@apply')->name('coupons.apply');
-            Route::post('coupons/apply/{item}', 'CouponsController@apply')->name('coupons.apply');
+            Route::post('coupons/apply', 'CouponsController@apply')->name('coupons.apply');
 
             //Banners
             Route::get('banners', 'BannersController@index')->name('banners.index');
@@ -116,6 +112,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/import/restaurants', 'RestorantController@import')->name('import.restaurants');
     Route::get('/restaurant/{restaurant}/activate', 'RestorantController@activateRestaurant')->name('restaurant.activate');
     Route::post('/restaurant/workinghours', 'RestorantController@workingHours')->name('restaurant.workinghours');
+    Route::post('/restaurant/address','RestorantController@getCoordinatesForAddress')->name('restaurant.coordinatesForAddress');
 
     Route::prefix('finances')->name('finances.')->group(function () {
         Route::get('admin', 'FinanceController@adminFinances')->name('admin');
@@ -132,8 +129,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('drivers', 'DriverController');
     Route::resource('clients', 'ClientController');
     Route::resource('orders', 'OrderController');
-    Route::get('/print/{id}', 'OrderController@prints')->name('prate.order');
-    Route::get('/payOnline/{id}', 'OrderController@prints')->name('rate.order');
     Route::post('/rating/{order}', 'OrderController@rateOrder')->name('rate.order');
     Route::get('/check/rating/{order}', 'OrderController@checkOrderRating')->name('check.rating');
 
@@ -156,6 +151,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('items', 'ItemsController');
     Route::prefix('items')->name('items.')->group(function () {
+        Route::get('reorder/{up}', 'ItemsController@reorderCategories')->name('reorder');
         Route::get('list/{restorant}', 'ItemsController@indexAdmin')->name('admin');
 
         // Options
@@ -198,12 +194,12 @@ Route::group(['middleware' => ['auth']], function () {
 
     if (config('app.isft')) {
         Route::get('/cart-checkout', 'CartController@cart')->name('cart.checkout');
-        Route::post('/cart-checkout', 'CartController@a');
     }
 
     Route::resource('plans', 'PlansController');
     Route::get('/plan', 'PlansController@current')->name('plans.current');
     Route::post('/subscribe/plan', 'PlansController@subscribe')->name('plans.subscribe');
+    Route::get('/subscribe/plan3d/{plan}/{user}', 'PlansController@subscribe3dStripe')->name('plans.subscribe_3d_stripe');
     Route::post('/subscribe/update', 'PlansController@adminupdate')->name('update.plan');
 
     Route::get('qr', 'QRController@index')->name('qr');
@@ -285,45 +281,4 @@ Route::post('webhooks/mollie', 'PaymentController@handleWebhookNotification')->n
 
 Route::get('order/success', 'OrderController@success')->name('order.success');
 
-Route::get('order/confirm', 'OrderController@confirm')->name('order.confirm');
-
 Route::post('/fb-order', 'OrderController@fbOrderMsg')->name('fb.order');
-
-
-
-
-Route::resource('customorder', 'CustomOrderController');
-
-
-Route::get('/getUser', 'CustomOrderController@getById' );
-Route::get('/getProduct','CustomOrderController@getProduct' );
-Route::get('/getItem/{item}','CustomOrderController@getItem' );
-
-
-Route::get('custom/order/customers', 'CustomOrderController@customers');
-
-/*Route::get('custom/order/index', 'CustomOrderController@index');*/
-
-Route::get('get_product_by_category', 'CustomOrderController@getProductByCategory');
-// SSLCOMMERZ Start
-Route::get('/example1/{id}', 'SslCommerzPaymentController@exampleEasyCheckout');
-Route::get('/example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout']);
-
-Route::post('/pay', [SslCommerzPaymentController::class, 'index']);
-Route::post('/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax']);
-
-Route::post('/success', [SslCommerzPaymentController::class, 'success']);
-Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
-Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
-
-Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
-
-//SSLCOMMERZ ENDF
-
-/*Route::get('mgi', function (){
-    Artisan::call('make:migration create_online_payment_table');
-});*/
-
-//search product
-
-Route::get('product/search', 'ItemsController@searchProduct')->name('product.search');

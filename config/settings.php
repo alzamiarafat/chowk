@@ -121,4 +121,5 @@ return [
     'paypal_client_id' => env('PAYPAL_CLIENT_ID', ''),
     'enable_import_csv' => env('ENABLE_IMPORT_CSV', true),
     'share_this_property' => env('SHARE_THIS_PROPERTY', ''),
+    'label_on_custom_fields'=>env('LABEL_ON_CUSTOM_FIELDS','Customer Info')
 ];

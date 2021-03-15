@@ -18,6 +18,12 @@
                         </button>
                     </div>
                 @endif
+
+                 <!-- Errors on Stripe -->
+                @if (session('error'))
+                 <div role="alert" class="alert alert-danger">{{ session('error') }}</div>
+                @endif
+
             </div>
 
             @foreach ($plans as $plan)

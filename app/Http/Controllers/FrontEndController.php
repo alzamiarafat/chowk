@@ -8,6 +8,7 @@ use App\Items;
 use App\Pages;
 use App\Plans;
 use App\Restorant;
+use App\Categories;
 use App\Settings;
 use App\Tables;
 use App\User;
@@ -163,7 +164,7 @@ class FrontEndController extends Controller
     {
         $subDomain = $this->getSubDomain();
         if ($subDomain) {
-            $restorant = Restorant::where('subdomain', $subDomain)->get();
+            $restorant = Restorant::whereRaw('REPLACE(subdomain, "-", "") = ?', [str_replace("-","",$subDomain)])->get();
             if (count($restorant) != 1) {
                 return view('restorants.alertdomain', ['subdomain' =>$subDomain]);
             }
@@ -548,7 +549,7 @@ class FrontEndController extends Controller
         if ($subDomain && $alias !== $subDomain) {
             return redirect()->route('restorant', $subDomain);
         }
-        $restorant = Restorant::where('subdomain', $alias)->first();
+        $restorant = Restorant::whereRaw('REPLACE(subdomain, "-", "") = ?', [str_replace("-","",$alias)])->first();
 
         if ($restorant->active == 1) {
 
@@ -615,6 +616,7 @@ class FrontEndController extends Controller
             $currentEnvLanguage = isset(config('config.env')[2]['fields'][0]['data'][config('app.locale')]) ? config('config.env')[2]['fields'][0]['data'][config('app.locale')] : 'UNKNOWN';
 
             //dd($restorant->categories[1]->items[0]->extras);
+           // dd(Categories::where('restorant_id',$restorant->id)->ordered()->get());
             return view('restorants.show', [
                 'restorant' => $restorant,
                 'openingTime' => $openingTime,

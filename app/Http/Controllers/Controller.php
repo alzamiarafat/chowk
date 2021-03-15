@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Restorant;
-use App\Coupons;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -11,7 +10,6 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Str;
 use Image;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class Controller extends BaseController
 {
@@ -170,14 +168,12 @@ class Controller extends BaseController
 
     public function getRestaurant()
     {
-        if (auth()->user()->hasRole('admin'))
-        {
-            return Coupons::all();
+        if (! auth()->user()->hasRole('owner')) {
+            return null;
         }
-        else{
 
         //Get restaurant for currerntly logged in user
-        return Restorant::where('user_id', auth()->user()->id)->first();}
+        return Restorant::where('user_id', auth()->user()->id)->first();
     }
 
     public function ownerOnly()
@@ -190,14 +186,29 @@ class Controller extends BaseController
     public function makeAlias($name)
     {
         $cyr = [
-            'ж',  'ч',  'щ',   'ш',  'ю',  'а', 'б', 'в', 'г', 'д', 'е', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ъ', 'ь', 'я',
-            'Ж',  'Ч',  'Щ',   'Ш',  'Ю',  'А', 'Б', 'В', 'Г', 'Д', 'Е', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ъ', 'Ь', 'Я', ];
+            'ж',  'ч',  'щ',   'ш',  'ю',  'а', 'б', 'в', 'г', 'д', 'е', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ъ', 'ь', 'я','ñ','ń',
+            'Ж',  'Ч',  'Щ',   'Ш',  'Ю',  'А', 'Б', 'В', 'Г', 'Д', 'Е', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ъ', 'Ь', 'Я','Ñ','Ń'];
         $lat = [
-            'zh', 'ch', 'sht', 'sh', 'yu', 'a', 'b', 'v', 'g', 'd', 'e', 'z', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'c', 'y', 'x', 'q',
-            'Zh', 'Ch', 'Sht', 'Sh', 'Yu', 'A', 'B', 'V', 'G', 'D', 'E', 'Z', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', 'c', 'Y', 'X', 'Q', ];
+            'zh', 'ch', 'sht', 'sh', 'yu', 'a', 'b', 'v', 'g', 'd', 'e', 'z', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'c', 'y', 'x', 'q','n','n',
+            'Zh', 'Ch', 'Sht', 'Sh', 'Yu', 'A', 'B', 'V', 'G', 'D', 'E', 'Z', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', 'c', 'Y', 'X', 'Q','N','N'];
         $name = str_replace($cyr, $lat, $name);
 
-        return strtolower(preg_replace('/[^A-Za-z0-9]/', '', $name));
+        $act=[
+            'ñ','ń','à','á','è','é','ü',
+            'Ñ','Ń','À','Á','È','É','Ü'
+        ];
+
+        $latACT=[
+            'n','n','a','a','e','e','u',
+            'N','N','A','A','E','E','U'
+        ];
+
+        $name = str_replace($act, $latACT, $name);
+
+        
+        $name = str_replace(" ", "-", $name);
+
+        return strtolower(preg_replace('/[^A-Za-z0-9-]/', '', $name));
     }
 
     public function scopeIsWithinMaxDistance($query, $latitude, $longitude, $radius = 25, $table = 'restorants')

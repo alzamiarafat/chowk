@@ -188,6 +188,30 @@ class SettingsController extends Controller
 
     public function cloudupdate(){
         if (auth()->user()->hasRole('admin')) {
+
+            //Always run migration
+            Artisan::call('migrate', ['--force' => true]);
+
+            $memory_limit = ini_get('memory_limit');
+            if (preg_match('/^(\d+)(.)$/', $memory_limit, $matches)) {
+                if ($matches[2] == 'M') {
+                    $memory_limit = $matches[1] * 1024 * 1024; // nnnM -> nnn MB
+                } else if ($matches[2] == 'K') {
+                    $memory_limit = $matches[1] * 1024; // nnnK -> nnn KB
+                } else if ($matches[2] == 'G') {
+                    $memory_limit = $matches[1] * 1024*1024*1024; // nnnM -> GB
+                }
+            }
+            $okMemory=true;
+            if($memory_limit==-1||$memory_limit >= 512 * 1024 * 1024){
+               
+            }else{
+                //Alert
+                $okMemory=false;
+            }
+            
+
+
             $updater = new \Codedge\Updater\UpdaterManager(app());
 
             //With update
@@ -243,7 +267,8 @@ class SettingsController extends Controller
             return view('settings.cloudupdate', [
                 'newVersionAvailable'=>$newVersionAvailable,
                 'newVersion'=>$newVersion,
-                'theChangeLog'=>$theChangeLog
+                'theChangeLog'=>$theChangeLog,
+                'okMemory'=>$okMemory
                ]);
 
         }else{
@@ -254,19 +279,6 @@ class SettingsController extends Controller
     public function index(Settings $settings)
     {
         if (auth()->user()->hasRole('admin')) {
-
-
-            //Always run migration
-            $exitCodeForMigration=Artisan::call('migrate', [
-                '--force' => true
-             ]);
-
-            
-
-             
-            
-
-            
 
             $curreciesArr = [];
             static::$currencies = require __DIR__.'/../../../config/money.php';
@@ -417,6 +429,9 @@ class SettingsController extends Controller
         $settings->mobile_info_title = strip_tags($request->mobile_info_title) ? strip_tags($request->mobile_info_title) : '';
         $settings->mobile_info_subtitle = strip_tags($request->mobile_info_subtitle) ? strip_tags($request->mobile_info_subtitle) : '';
         $settings->delivery = (float) $request->delivery;
+        $settings->order_fields=$request->order_fields;
+        $settings->update();
+        
         //$settings->order_options = $request->order_options;
 
         fwrite(fopen(__DIR__.'/../../../public/byadmin/front.js', 'w'), str_replace('tagscript', 'script', $request->jsfront));

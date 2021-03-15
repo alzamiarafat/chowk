@@ -45,8 +45,7 @@
                                 @foreach ($restorants as $restorant)
                                     <tr>
                                         <td><a href="{{ route('admin.restaurants.edit', $restorant) }}">{{ $restorant->name }}</a></td>
-                                        {{--<td><img class="rounded" src={{ $restorant->icon }} width="50px" height="50px"></img></td>--}}
-                                        <td>{{$restorant->id}}</td>
+                                        <td><img class="rounded" src={{ $restorant->icon }} width="50px" height="50px"></img></td>
                                         <td>{{  $restorant->user?$restorant->user->name:__('Deleted') }}</td>
                                         <td>
                                             <a href="mailto: {{ $restorant->user?$restorant->user->email:""  }}">{{  $restorant->user?$restorant->user->email:__('Deleted')  }}</a>
@@ -78,12 +77,13 @@
                                                                 {{ __('Deactivate') }}
                                                             </button>
                                                             @endif
+                                                            
+                                                            
                                                         </form>
                                                     <a class="dropdown-item warning red" onclick="return confirm('Are you sure you want to delete this Restaurant from Database? This will aslo delete all data related to it. This is irreversible step.')"  href="{{ route('admin.restaurant.remove',$restorant)}}">{{ __('Delete') }}</a>
 
                                                 </div>
                                             </div>
-
                                         </td>
                                     </tr>
                                 @endforeach

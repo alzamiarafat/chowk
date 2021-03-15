@@ -1,10 +1,10 @@
 <nav id="navbar-main" class="navbar navbar-light navbar-expand-lg fixed-top">
 
 
-    <div class="container">
+    <div class="container-fluid">
         @if(!config('settings.hide_project_branding'))
-          <a class="navbar-brand mr-lg-5" href="/" >
-            <img src="{{ config('global.site_logo') }}" >
+          <a class="navbar-brand mr-lg-5" href="/">
+            <img src="{{ config('global.site_logo') }}">
           </a>
         @else
         <a class="navbar-brand mr-lg-5" href="/">
@@ -23,8 +23,7 @@
               @if(!config('settings.hide_project_branding'))
               <div class="col-6 collapse-brand">
                 <a href="#">
-                  <img src="{{ config('global.site_logo') }}" >
-
+                  <img src="{{ config('global.site_logo') }}"
                 </a>
               </div>
               @else
@@ -32,6 +31,7 @@
                 <a href="#">
                   
                 </a>
+                
               </div>
               @endif
               <div class="col-6 collapse-close">
@@ -127,21 +127,31 @@
                   @endif
 
                   @if(isset($hasGuestOrders)&&$hasGuestOrders)
+
                     <a  href="{{ route('guest.orders')}}" class="nav-link" style="cursor:pointer;">
+
                         <i class="fa fa-list-alt"></i>
+
                       <span class="nav-link-inner--text">{{ __('My Orders') }}</span>
                     </a>
                   @endif
                 @endif
+
                 @if(\Request::route()->getName() != "newrestaurant.register" && config('app.ordering'))
                 <a id="mobileCartLink" onclick="openNav()" class="nav-link" style="cursor:pointer;">
                     <i class="fa fa-shopping-cart"></i>
                     <span class="nav-link-inner--text">{{ __('Cart') }}</span>
                 </a>
                 @endif
+                
               @endisset
+
+
             </li>
           </ul>
         </div>
+
+
       </div>
+
     </nav>

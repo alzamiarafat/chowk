@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Categories;
 use App\Extras;
 use App\Imports\ItemsImport;
 use App\Items;
@@ -17,6 +18,11 @@ class ItemsController extends Controller
 {
     private $imagePath = 'uploads/restorants/';
 
+    public function reorderCategories(Categories $up){
+        $up->moveOrderUp();
+        return redirect()->route('items.index')->withStatus(__('Sort order updated'));
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,6 +31,8 @@ class ItemsController extends Controller
     public function index()
     {
         if (auth()->user()->hasRole('owner')) {
+
+            
             $canAdd = true;
             if (config('app.isqrsaas')) {
                 //In QRsaas with plans, we need to check if they can add new items.
@@ -37,6 +45,7 @@ class ItemsController extends Controller
                     $canAdd = $currentPlan->limit_items > $items->count();
                 }
             }
+
             //Change language
             ConfChanger::switchLanguage(auth()->user()->restorant);
 
@@ -44,7 +53,7 @@ class ItemsController extends Controller
                 $localMenuToDelete=auth()->user()->restorant->localmenus()->where('language', $_GET['remove_lang'])->first();
                 $isMenuToDeleteIsDefault=$localMenuToDelete->default.""=="1";
                 $localMenuToDelete->delete();
-
+                
                 $nextLanguageModel = auth()->user()->restorant->localmenus()->first();
                 $nextLanguage = $nextLanguageModel->language;
                 app()->setLocale($nextLanguage);
@@ -59,7 +68,7 @@ class ItemsController extends Controller
             if(isset($_GET['make_default_lang'])){
                 $newDefault=auth()->user()->restorant->localmenus()->where('language', $_GET['make_default_lang'])->first();
                 $oldDefault=auth()->user()->restorant->localmenus()->where('default', "1")->first();
-
+                
                 if($oldDefault&&$oldDefault->language!=$_GET['make_default_lang']){
                     $oldDefault->default=0;
                     $oldDefault->update();
@@ -77,6 +86,19 @@ class ItemsController extends Controller
             //Change currency
             ConfChanger::switchCurrency(auth()->user()->restorant);
             $defaultLng=auth()->user()->restorant->localmenus->where('default','1')->first();
+
+            
+
+            //Since 2.1.7 - there is sorting. 
+            $categories=auth()->user()->restorant->categories;
+
+            //If first item order starts with 0
+            if($categories->first()&&$categories->first()->order_index==0){
+                Categories::setNewOrder($categories->pluck('id')->toArray());
+
+                //Re-get categories
+                $categories=auth()->user()->restorant->categories;
+            }
 
             return view('items.index', [
                 'canAdd'=>$canAdd,

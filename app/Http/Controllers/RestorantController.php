@@ -31,6 +31,7 @@ use Illuminate\Support\Str;
 use Image;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
+use Spatie\Geocoder\Geocoder;
 
 class RestorantController extends Controller
 {
@@ -234,6 +235,21 @@ class RestorantController extends Controller
         if($request->has('mollie_payment_key')){
             $restaurant->mollie_payment_key = $request->mollie_payment_key;
         }
+
+        if($request->has('paypal_client_id')){
+            $restaurant->setConfig('paypal_client_id',$request->paypal_client_id);
+        }
+
+        if($request->has('paypal_secret')){
+            $restaurant->setConfig('paypal_secret',$request->paypal_secret);
+        }
+
+        if($request->has('paypal_mode')){
+            $restaurant->setConfig('paypal_mode',$request->paypal_mode);
+        }
+
+
+
         if($request->has('payment_info')){
             $restaurant->payment_info = $request->payment_info;
         }
@@ -339,6 +355,19 @@ class RestorantController extends Controller
         }
 
         return redirect()->route('admin.restaurants.index')->withStatus(__('Restaurant successfully removed from database.'));
+    }
+
+    public function getCoordinatesForAddress(Request $request)
+    {
+        $client = new \GuzzleHttp\Client();
+        $geocoder = new Geocoder($client);
+        $geocoder->setApiKey(config('geocoder.key'));
+
+        $geoResults = $geocoder->getCoordinatesForAddress($request->address);
+
+        $data = ['status'=>true, 'results'=>$geoResults];
+
+        return response()->json($data);
     }
 
     public function updateLocation(Restorant $restaurant, Request $request)

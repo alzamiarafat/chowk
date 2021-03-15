@@ -21,12 +21,20 @@
             "options": {
                 "symlink": true
             }
+        },
+        "laravel-translation": {
+            "type": "path",
+            "url": "packages/joedixon/laravel-translation",
+            "options": {
+                "symlink": true
+            }
         }
     },
     "require": {
         "php": "^7.3|^8.0",
         "akaunting/money": "^1.1",
         "biscolab/laravel-recaptcha": "^5.0",
+        "cmixin/business-time": "^1.11",
         "codedge/laravel-selfupdater": "@dev",
         "darryldecode/cart": "~4.0",
         "doctrine/dbal": "^2.11",
@@ -34,7 +42,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.5",
-        "joedixon/laravel-translation": "^1.1",
+        "joedixon/laravel-translation": "@dev",
         "kkomelin/laravel-translatable-string-exporter": "^1.10",
         "laravel-frontend-presets/argon": "^1.0",
         "laravel-notification-channels/onesignal": "^2.3",
@@ -52,14 +60,15 @@
         "onecentlin/laravel-adminer": "^4.7",
         "paypal/rest-api-sdk-php": "^1.14",
         "pusher/pusher-php-server": "^4.1",
-        "sentry/sentry-laravel": "^2.1",
         "silviolleite/laravelpwa": "^2.0",
+        "spatie/eloquent-sortable": "^3.11",
         "spatie/geocoder": "^3.9",
         "spatie/laravel-cookie-consent": "^2.12",
         "spatie/laravel-googletagmanager": "^2.6",
         "spatie/laravel-permission": "^3.18",
         "spatie/laravel-sitemap": "^5.8",
         "spatie/laravel-translatable": "^4.6",
+        "spatie/opening-hours": "^2.10",
         "stripe/stripe-php": "^7.60",
         "twilio/sdk": "^6.11",
         "unicodeveloper/laravel-paystack": "^1.0",

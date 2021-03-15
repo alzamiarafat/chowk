@@ -72,12 +72,13 @@
             </li>
         @endif
 
-        
+        <!--
         <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.restaurant.coupons.index') }}">
                 <i class="ni ni-tag text-pink"></i> {{ __('Coupons') }}
             </a>
         </li>
+    -->
 
 
     <li class="nav-item">

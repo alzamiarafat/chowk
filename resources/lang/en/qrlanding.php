@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return [
   'below' => 'below',
   'contactles_menu' => 'Contacless QR Menu',
   'cookies' => 'Cookies',
@@ -12,10 +12,10 @@ return array (
   'edit' => 'Edit Page',
   'helpful_links' => 'Helpfull Links',
   'hero_input_email' => 'Your email',
-  'hero_input_name' => 'Category Name',
+  'hero_input_name' => 'Restaurant or bar name',
   'hero_input_phone' => 'Phone',
   'hero_subtitle' => 'Their mobile is your menu now!',
-  'hero_title' => 'Create a Product list for your Shop',
+  'hero_title' => 'Create a digital menu for your Restaurant or Bar. Engage more with your customers.',
   'join_now' => 'Join now',
   'login' => 'Login',
   'month' => 'month',
@@ -67,7 +67,7 @@ return array (
   'qr_code' => 'QR code',
   'register' => 'Register',
   'success' => 'Changed successfully. Please refresh the page!',
-  'testimonial1' => 'We use Chowk to protect our Customers. Dirty old menus are a thing from the past. So far Customer report no issues. And they love our new online menu.',
+  'testimonial1' => 'We use FoodTiger to protect our visitors. Dirty old menus are a thing from the past. So far clients report no issues. And they love our new online menu.',
   'testimonial1_author' => 'James Curran',
   'testimonial1_restaurant' => 'Brooklyn Taco',
   'testimonial2' => 'FoodTiger was the perfect tool for the COVID situation. We should go earlier to this type of menu.',
@@ -75,12 +75,12 @@ return array (
   'testimonial2_restaurant' => 'Burger 2Go',
   'testimonial3' => 'No more printing and reprinting for some small mistake in our menu or price change. We love what FoodTiger have provided.',
   'testimonial3_author' => 'Jessica Evans',
-  'testimonial3_restaurant' => '',
-  'testimonial4' => 'Customers are happy. They can see that we are a responsible bar and their health is a priority. No more old dirty menus :D. All they need is their phone.',
+  'testimonial3_restaurant' => 'Awang Italian Restaurant',
+  'testimonial4' => 'Clients are happy. They can see that we are a responsible bar and their health is a priority. No more old dirty menus :D. All they need is their phone.',
   'testimonial4_author' => 'Jason Edwards',
   'testimonial4_restaurant' => 'Malibu Diner',
   'testimonials' => 'Testimonials',
-  'testimonials_subtitle' => 'Used by top Category worldwide',
-  'testimonials_title' => 'Category and Bars that love our QRs',
+  'testimonials_subtitle' => 'Used by top restaurants worldwide',
+  'testimonials_title' => 'Restaurants and Bars that love our QRs',
   'year' => 'year',
-);
+];

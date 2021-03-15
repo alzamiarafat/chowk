@@ -57,7 +57,6 @@ class RegisterController extends Controller
             'phone' => ['required', 'string', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
-
         if (config('settings.enable_birth_date_on_register') && config('settings.minimum_years_to_register')) {
             $rules['birth_date'] = 'required|date|date_format:Y-m-d|before:-'.config('settings.minimum_years_to_register').' years';
         }
@@ -80,7 +79,9 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'api_token' => Str::random(80)
         ]);*/
+
         //dd($data);
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -89,11 +90,15 @@ class RegisterController extends Controller
             'api_token' => Str::random(80),
             'birth_date' => isset($data['birth_date']) ? $data['birth_date'] : '',
         ]);
+
         $user->assignRole('client');
+
         //Send welcome email
         //$user->notify(new WelcomeNotification($user));
+
         return $user;
     }
+
     protected function registered(Request $request, User $user)
     {
         if (config('settings.enable_sms_verification')) {

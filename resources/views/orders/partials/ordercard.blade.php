@@ -1,5 +1,4 @@
 <div class="card shadow">
-    {{--Mehraab changed updated--}}
     <div class="card-header border-0">
         @if(count($orders))
         <form method="GET">
@@ -13,7 +12,8 @@
                     </button>
                 </div>
             </div>
-                <div class="tab-content orders-filters">
+            <br/>
+            <div class="tab-content orders-filters">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-daterange datepicker row align-items-center">
@@ -41,30 +41,27 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                         @hasrole('admin|driver')
-                        <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-control-label" for="restorant">{{ __('Filter by Restaurant') }}</label>
                                     <select class="form-control select2" name="restorant_id">
-                                        <option disabled selected value>  {{ __('Select an option') }}  </option>
+                                        <option disabled selected value> -- {{ __('Select an option') }} -- </option>
                                         @foreach ($restorants as $restorant)
                                             <option <?php if(isset($_GET['restorant_id'])&&$_GET['restorant_id'].""==$restorant->id.""){echo "selected";} ?> value="{{ $restorant->id }}">{{$restorant->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-
                         @endif
                         @if (config('app.isft'))
                         @hasrole('admin|owner')
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-control-label" for="client">{{ __('Filter by Client') }}</label>
 
                                 <select class="form-control select2" id="blabla" name="client_id">
-                                    <option disabled selected value>  {{ __('Select an option') }} </option>
+                                    <option disabled selected value> -- {{ __('Select an option') }} -- </option>
                                     @foreach ($clients as $client)
                                         <option  <?php if(isset($_GET['client_id'])&&$_GET['client_id'].""==$client->id.""){echo "selected";} ?>  value="{{ $client->id }}">{{$client->name}}</option>
                                     @endforeach
@@ -73,23 +70,24 @@
                         </div>
                         @endif
                         @hasrole('admin|owner')
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-control-label" for="driver">{{ __('Filter by Driver') }}</label>
                                 <select class="form-control select2" name="driver_id">
-                                    <option disabled selected value> {{ __('Select an option') }} </option>
+                                    <option disabled selected value> -- {{ __('Select an option') }} -- </option>
                                     @foreach ($drivers as $driver)
                                         <option <?php if(isset($_GET['driver_id'])&&$_GET['driver_id'].""==$driver->id.""){echo "selected";} ?>   value="{{ $driver->id }}">{{$driver->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        </div>
                         @endif    
                         @else
                         @endif
+                        
+                    </div>
 
-                        <div class="col-md-12 offset-md-12">
+                        <div class="col-md-6 offset-md-6">
                             <div class="row">
                                 @if ($parameters)
                                     <div class="col-md-4">
@@ -110,12 +108,6 @@
              </div>
         </form>
         @endif
-
-            <div class="col-md-3">
-                {{--<button type="submit" class="btn btn-success btn-md btn-block">{{ __('Create Custom Order') }}</button>--}}
-                {{--<a class="btn btn-success" href="{{route('customorder')}}"><i class="fa fa-plus"></i>{{ __(' Create Custom Order') }}</a>--}}
-            </div>
-
     </div>
     <div class="col-12">
         @include('partials.flash')

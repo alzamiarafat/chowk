@@ -1,21 +1,12 @@
-@extends('layouts.app', ['class' => 'bg'])
+@extends('layouts.app', ['class' => 'bg-default'])
 
 @section('content')
-    {{--@include('layouts.headers.guest')--}}
+    @include('layouts.headers.guest')
 
-    <div class="container">
+    <div class="container mt--8 pb-5">
         <!-- Table -->
-        <div class="row ">
-            <div class="col-md-4 d-flex justify-content-center align-items-center">
-                {{--<div class="d-flex justify-content-center align-items-center">--}}
-                <div class="align-item-center">
-                    <a href="/"><img src="{{ config('global.site_logo') }}" width="200" class="thumbnail" alt="..."></a>
-
-
-                </div>
-                {{--</div>--}}
-            </div>
-            <div class="col-lg-8 col-md-8 ">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
                 <div class="card bg-secondary shadow border-0">
                     <div class="card-body px-lg-5 py-lg-5">
                         <form role="form" method="POST" action="{{ route('register') }}">
@@ -97,8 +88,10 @@
                             @endif
                             </div>
                             @endif
+
+
                             <div class="text-center">
-                                <button type="submit" class="btn btn-danger mt-4">{{ __('Create account') }}</button>
+                                <button type="submit" class="btn btn-primary mt-4">{{ __('Create account') }}</button>
                             </div>
                         </form>
                     </div>
@@ -106,13 +99,13 @@
                 <div class="row mt-3">
                     <div class="col-6">
                         @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-dark">
+                            <a href="{{ route('password.request') }}" class="text-light">
                                 <small>{{ __('Forgot password?') }}</small>
                             </a>
                         @endif
                     </div>
                     <div class="col-6 text-right">
-                        <a href="{{ route('login') }}" class="text-dark">
+                        <a href="{{ route('login') }}" class="text-light">
                             <small>{{ __('Back to login') }}</small>
                         </a>
                     </div>
@@ -121,4 +114,3 @@
         </div>
     </div>
 @endsection
-

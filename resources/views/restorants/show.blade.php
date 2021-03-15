@@ -1,6 +1,8 @@
 @extends('layouts.front', ['class' => ''])
+
 @section('content')
 @include('restorants.partials.modals')
+
     <section class="section-profile-cover section-shaped grayscale-05 d-none d-md-none d-lg-block d-lx-block">
       <!-- Circles background -->
       <img class="bg-image" loading="lazy" src="{{ $restorant->coverm }}" style="width: 100%;">
@@ -17,19 +19,13 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="title white"  <?php if($restorant->description || $openingTime && $closingTime){echo 'style="border-bottom: 1px solid #f2f2f2;"';} ?> >
-                        <h1 class="display-3 text-white" {{--data-toggle="modal" data-target="#modal-restaurant-info"--}} style="cursor: pointer;">{{ $restorant->name }}</h1>
-                        {{--<p class="display-4" style="margin-top: 120px">{{ $restorant->description }}</p>--}}
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-{{--
+                        <h1 class="display-3 text-white" data-toggle="modal" data-target="#modal-restaurant-info" style="cursor: pointer;">{{ $restorant->name }}</h1>
+                        <p class="display-4" style="margin-top: 120px">{{ $restorant->description }}</p>
                         <p>@if(!empty($openingTime) && !empty($closingTime))  <i class="ni ni-watch-time"></i> <span>{{ $openingTime }}</span> - <span>{{ $closingTime }}</span> | @endif  @if(!empty($restorant->address))<i class="ni ni-pin-3"></i></i> <a target="_blank" href="https://www.google.com/maps/search/?api=1&query={{ urlencode($restorant->address) }}">{{ $restorant->address }}</a>  | @endif @if(!empty($restorant->phone)) <i class="ni ni-mobile-button"></i> <a href="tel:{{$restorant->phone}}">{{ $restorant->phone }} </a> @endif</p>
---}}
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-lg-12">
                     @include('partials.flash')
@@ -38,7 +34,7 @@
         </div>
 
     </section>
-    <section class="section section-lg d-md-block d-lg-none d-lx-none" >
+    <section class="section section-lg d-md-block d-lg-none d-lx-none" style="padding-bottom: 0px">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -57,9 +53,12 @@
         </div>
     </section>
 
-    <section class="section pt-lg-0" id="restaurant-content" style="padding-top:0px;paddibg-bottom:208px">
+    <section class="section pt-lg-0" id="restaurant-content" style="padding-top: 0px">
         <input type="hidden" id="rid" value="{{ $restorant->id }}"/>
         <div class="container container-restorant">
+
+            
+            
             @if(!$restorant->categories->isEmpty())
         <nav class="tabbable sticky" style="top: {{ config('app.isqrsaas') ? 64:88 }}px;">
                 <ul class="nav nav-pills bg-white mb-2">
@@ -81,127 +80,7 @@
             
             @endif
 
-            <style>
-                /*.discount{*/
-                /*     position: absolute;*/
-                /*    left: 0;*/
-                /*    top: 20px;*/
-                /*    text-transform: uppercase;*/
-                /*    font-size: 13px;*/
-                /*    font-weight: 700;*/
-                /*    background: red;*/
-                /*    color: #fff;*/
-                /*    padding: 3px 10px;*/
-                /*    overflow: hidden;*/
-                /*}*/
-                .strip .figure img {
-                  display: block;
-                  transition: all 1.5s ease;
-                  
-                }
-              .strip .figure img:hover {
-                    /*-webkit-transform: translate(-50%, -50%) scale(1.1);
-                    -moz-transform: translate(-50%, -50%) scale(1.1);
-                    -ms-transform: translate(-50%, -50%) scale(1.1);
-                    -o-transform: translate(-50%, -50%) scale(1.1);
-                    transform: translate(-50%, -50%) scale(1.1);*/
-                    /*transform: scale(1.1);*/
-                    opacity:0.5;
-                    background-color: #000000;
-}
-/*Tooltip On mouse hover by mehraab hossain*/
-.tooltip > .tooltip-inner {
-    background-color: #283747; 
-    color: #FFFFFF; 
-    /*padding:px;*/
-    font-size: 20px;
-  }
-/*Tootltip end by mehraab hossain*/
-/*Offer tag Start by mehraab*/
-
-    .discount {
-	display: inline-block;
-    width: auto;
-	height: 38px;
-	top:20px;
-	background-color: #e52923;
-	-webkit-border-radius: 3px 4px 4px 3px;
-	-moz-border-radius: 3px 4px 4px 3px;
-	border-radius: 3px 4px 4px 3px;
-	border-left: 1px solid #e52923;
-	/* This makes room for the triangle */
-	margin-left: 19px;
-	position: absolute;
-	color: white;
-	font-size: 13px;
-    font-weight: 700;
-	
-	
-	font-family: 'Source Sans Pro', sans-serif;
-	font-size: 13px;
-	line-height: 38px;
-	padding: 0 10px 0 10px;
-	
-	
-	animation-name: example;
-    animation-duration: 10s;
-        animation-iteration-count: 50;
-
-}
-
-/* Makes the triangle */
-.discount:before {
-	content: "";
-	position: absolute;
-	display: block;
-	left: -19px;
-	width: 0;
-	height: 0;
-	border-top: 19px solid transparent;
-	border-bottom: 19px solid transparent;
-	border-right: 19px solid #e52923;
-
-
-}
-
-/* Makes the circle */
-.discount:after {
-	content: "";
-	background-color: white;
-	border-radius: 50%;
-	width: 4px;
-	height: 4px;
-	display: block;
-	position: absolute;
-	left: -9px;
-	top: 17px;
-
-
-}
-        
-        @keyframes example {
-  0%   {background-color: red;}
-  5%  {background-color: #A70904;}
-  10%  {background-color: red;}
-  15% {background-color: #A70904;}
-    20%   {background-color: red;}
-  25%  {background-color: #A70904;}
-  30%  {background-color: red;}
-  35% {background-color: #A70904;}
-    40%   {background-color: red;}
-  45%  {background-color: #A70904;}
-  50% {background-color: red;}
-  55%  {background-color: #A70904;}
-  60%  {background-color: red;}
-  65% {background-color: #A70904;}
-    70%   {background-color: red;}
-  75%  {background-color: #A70904;}
-  80%  {background-color: red;}
-  85% {background-color: #A70904;}
-    90%   {background-color: red;}
-  95%  {background-color: #A70904;}
-  100% {background-color: red;}
-}</style>
+            
 
 
             @if(!$restorant->categories->isEmpty())
@@ -213,59 +92,17 @@
                 @endif
                 <div class="row {{ clean(str_replace(' ', '', strtolower($category->name)).strval($key)) }}">
                     @foreach ($category->aitems as $item)
-                        <div class="col-xl-2 col-lg-2 col-md-4 col-sm-6 col-6 ">  
-
+                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                             <div class="strip">
                                 @if(!empty($item->image))
-                               <div>
-                                @if($item->discount>0)
-                                <div>
-                                <!--<span class="text-light discount" stytle="background:#e52923; color:#FFF">{{$item->discount}} Off</span>-->
-                                <span class="discount" stytle="background:#e52923; color:#FFF">
-                                   @if($item->discount_type==1)
-                                   @money($item->discount, config('settings.cashier_currency'),config('settings.do_convertion')) OFF</td>
-                                   @else
-                                   <!--($item->price-($item->price-$item->discount), config('settings.cashier_currency'),config('settings.do_convertion'))-->
-                                   {{$item->discount}} % OFF
-                                   @endif
-          
-                                    <!--@money($item->discount, config('settings.cashier_currency'),config('settings.do_convertion')) Off-->
-                                </span>
-                                </div>
+                                <figure>
+                                    <a onClick="setCurrentItem({{ $item->id }})" href="javascript:void(0)"><img src="{{ $item->logom }}" loading="lazy" data-src="{{ config('global.restorant_details_image') }}" class="img-fluid lazy" alt=""></a>
+                                </figure>
                                 @endif
-                                <div class="figure">
-                                    <a data-toggle="tooltip" title="{{$item->name}}" onClick="setCurrentItem({{ $item->id }})" href="javascript:void(0)"><span class="bg-danger"></span><img src="{{ $item->logom }}" loading="lazy" data-src="{{ config('global.restorant_details_image') }}" class="img-fluid lazy" alt=""></a>
-                                </div>
+                                <span class="res_title"><b><a onClick="setCurrentItem({{ $item->id }})" href="javascript:void(0)">{{ $item->name }}</a></b></span><br />
+                                <span class="res_description">{{ $item->short_description}}</span><br />
+                                <span class="res_mimimum">@money($item->price, config('settings.cashier_currency'),config('settings.do_convertion'))</span>
                             </div>
-                                    <!--<span style="display:inline-block;width:arrow_width;height:arrow_height;background-image:url({{ $item->logom }});">25%</span>-->
-                                    <!--<div class="d-flex justify-content-between align-items-center p-2 first"> <span class="percent">-25%</span></div> <img src="{{ $item->logom }}" loading="lazy" data-src="{{ config('global.restorant_details_image') }}" class="img-fluid lazy" alt="">-->
-                                @endif
-                                <span class=""><a data-toggle="tooltip" title="See More Details" onClick="setCurrentItem({{ $item->id }})" href="javascript:void(0)"><p>{{ \Illuminate\Support\Str::limit($item->name, 20, $end='...')}}</p></a></span>
-
-                                <!--<span class="res_description">{{ $item->short_description}}</span><br />-->
-                                <!--@if(strlen($item->name)<24)-->
-                                <!--</br>-->
-                                <!--@endif-->
-                                
-                                @if($item->discount>0)
-                                <div class="row ">
-                                    <del><span class="col-6 text-danger">৳ {{(int)$item->regular_price}}</span></del></br>
-                                <span class="col-6 float-right">
-                                    <!--@money(ceil($item->price), config('settings.cashier_currency'),config('settings.do_convertion'))-->
-                                     <!--@money((int)$item->price, config('settings.cashier_currency'),config('settings.do_convertion'))-->
-                                     ৳ {{(int)$item->price}}
-                                </span>
-                                </div>
-                                @endif
-                                @if($item->discount==0||$item->discount==NULL)
-                                <!--<span class="">@money((int)$item->price, config('settings.cashier_currency'),config('settings.do_convertion'))</span>-->
-                                <span class="">৳ {{(int)$item->price}}</span>
-                                @endif
-                                <div class="text-center p-2" style="background:#283747">
-                                <a onClick="setCurrentItem({{ $item->id }})" href="javascript:void(0)"><span class="text-white"><i class="fa fa-shopping-cart mr-2"></i>Add to cart</span></a>
-                                </div>
-                            </div>
-                            
                         </div>
                     @endforeach
                 </div>
@@ -523,7 +360,7 @@
 
     function appendOption(name,id){
         lastAdded=id;
-        $('#variants-area-inside').append('<div id="variants-area-'+id+'"><br /><label class="form-control-label"><b>'+name+'<b></label><div><div id="variants-area-inside-'+id+'" class="btn-group btn-group-toggle" data-toggle="buttons"> </div></div>');
+        $('#variants-area-inside').append('<div id="variants-area-'+id+'"><br /><label class="form-control-label"><b>'+name+'<b></label><div><div id="variants-area-inside-'+id+'" class="flex-wrap btn-group btn-group-toggle" data-toggle="buttons"> </div></div>');
     }
 
     function optionChanged(option_id,name){
@@ -650,7 +487,6 @@
         }
 
         $('#modalDescription').html(item.description);
-        $('#modalFullDescription').html(item.description);
 
 
         if(item.has_variants){
@@ -663,6 +499,10 @@
            $('#variants-area').show();
            setVariants();
            //$('#modalPrice').html("dynamic");
+
+
+
+
         }else{
             //Normal
             currentItemSelectedPrice=item.priceNotFormated;
@@ -749,7 +589,7 @@
     }
     ?>
 </script>
-<script type="text/javascript">
+    <script type="text/javascript">
         function getLocation(callback){
             $.ajaxSetup({
                 headers: {
@@ -853,9 +693,5 @@
                 }
             });
         });
-        
-        $(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip();   
-});
     </script>
 @endsection

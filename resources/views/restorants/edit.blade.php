@@ -109,8 +109,6 @@
         };
 
         $("input[type='checkbox'][name='days']").change(function() {
-
-
             var hourFrom = flatpickr($('#'+ this.value + '_from'), config);
             var hourTo = flatpickr($('#'+ this.value + '_to'), config);
 
@@ -442,6 +440,45 @@
             infoWindow.setContent(browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t support geolocation.');
             infoWindow.open(map);
         }
+
+        var form = document.getElementById('restorant-form');
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            var address = $('#address').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '/restaurant/address',
+                dataType: 'json',
+                data: { address: address},
+                success:function(response){
+                    if(response.status){
+                        if(response.results.lat && response.results.lng){
+                            initializeMap(response.results.lat, response.results.lng);
+                            initializeMarker(response.results.lat, response.results.lng);
+                            changeLocation(response.results.lat, response.results.lng);
+
+                            map_location.addListener('click', function(event) {
+                                marker.setPosition(new google.maps.LatLng(event.latLng.lat(), event.latLng.lng()));
+
+                                changeLocation(event.latLng.lat(), event.latLng.lng());
+                            });
+                        }
+                    }
+                }, error: function (response) {
+                //alert(response.responseJSON.errMsg);
+                }
+            })
+
+            form.submit();
+        });
     </script>
 @endsection
 

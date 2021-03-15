@@ -9,7 +9,6 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -21,21 +20,16 @@ class UserController extends Controller
      */
     public function index(User $model)
     {
-        // return view('users.index', ['users' => $model->paginate(15)]);
-        return view('users.index', [
-                    'users' => User::role('client')->where(['active'=>1])->paginate(15),
-
-                ]);
+        return view('users.index', ['users' => $model->paginate(15)]);
     }
-//where(['active'=>1])->
+
     /**
      * Show the form for creating a new user.
      *
      * @return \Illuminate\View\View
      */
-    public function create(){
-
-
+    public function create()
+    {
         return view('users.create');
     }
 
@@ -46,20 +40,11 @@ class UserController extends Controller
      * @param  \App\User  $model
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(UserRequest $request, User $model)
     {
-    $user= new User();
-    $user->name = $request->name;
-    $user->email = $request->email;
-    $user->password = Hash::make($request->password);
-        $user->assignRole('client');
+        $model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
 
-    //dd($user);
-        $user->save();
-        return redirect()->route('clients.index')->withStatus(__('User successfully created.'));
-
-
-
+        return redirect()->route('user.index')->withStatus(__('User successfully created.'));
     }
 
     /**

@@ -36,11 +36,6 @@
                 <i class="ni ni-shop text-info"></i> {{ __('Restaurants') }}
             </a>
         </li>
-                <li class="nav-item">
-            <a class="nav-link" href="{{ route('customorder.create') }}">
-                <i class="ni ni-ungroup text-info"></i> {{ __('Create Order') }}
-            </a>
-        </li>
         @if(config('app.isft'))
         <li class="nav-item">
             <a class="nav-link" href="{{ route('reviews.index') }}">
@@ -60,17 +55,6 @@
                 <i class="ni ni-ungroup text-info"></i> {{ __('Pages') }}
             </a>
         </li>
-        
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.restaurant.coupons.index') }}">
-                <i class="ni ni-tag text-pink"></i> {{ __('Coupons') }}
-            </a>
-        </li>
-        
-        <!--added for coupon-->
-      
-        
-        <!--Changed by Mehraab-->
         @if(config('settings.enable_pricing'))
         <li class="nav-item">
             <a class="nav-link" href="{{ route('plans.index') }}">

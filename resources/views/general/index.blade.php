@@ -74,7 +74,7 @@
                     <div class="card-footer py-4">
                         @if(count($items))
                             <nav class="d-flex justify-content-end" aria-label="...">
-                                
+                                {{ $items->links() }}
                             </nav>
                         @else
                             <h4>{{__('crud.no_items',['items'=>$item_names])}}</h4>

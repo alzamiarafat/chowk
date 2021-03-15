@@ -6,6 +6,8 @@ use App\Plans;
 use App\User;
 use Illuminate\Http\Request;
 use Laravel\Cashier\SubscriptionBuilder\RedirectToCheckoutResponse;
+use Laravel\Cashier\Exceptions\PaymentActionRequired;
+use Laravel\Cashier\Exceptions\PaymentFailure;
 use PayPal\Api\Agreement;
 use Unicodeveloper\Paystack\Paystack;
 
@@ -255,20 +257,42 @@ class PlansController extends Controller
         return redirect()->route('plans.index')->withStatus(__('Plan successfully deleted!'));
     }
 
+    public function subscribe3dStripe(Request $request,Plans $plan,User $user){
+        if($request->success.""=="true"){
+            //Assign user to plan
+            $user->plan_id = $plan->id;
+            $user->update();
+
+            return redirect()->route('plans.current')->withStatus(__('Plan update!'));
+        }else{
+            //TODO - handle better when executed on mobile app
+            return redirect()->route('plans.current')->withEror($request->message)->withInput();
+        }
+    }
+
     public function subscribe(Request $request)
     {
         $plan = Plans::findOrFail($request->plan_id);
 
         if (config('settings.subscription_processor') == 'Stripe') {
             $plan_stripe_id = $plan->stripe_id;
-
             //Shold we do a swap
-            if (auth()->user()->subscribed('main')) {
-                //SWAP
-                auth()->user()->subscription('main')->swap($plan_stripe_id);
-            } else {
-                //NEW
-                $payment_stripe = auth()->user()->newSubscription('main', $plan_stripe_id)->create($request->stripePaymentId);
+            try {
+                if (auth()->user()->subscribed('main')) {
+                    
+                    //SWAP
+                    auth()->user()->subscription('main')->swap($plan_stripe_id);
+                } else {
+                    //NEW Stripe 
+                    //Surround with try
+                    $payment_stripe = auth()->user()->newSubscription('main', $plan_stripe_id)->create($request->stripePaymentId);
+                    
+                }
+            }
+            catch (PaymentActionRequired $e) {
+                //On PaymentActionRequired - send the checkout link
+                $paymentRedirect = route('cashier.payment',[$e->payment->id, 'redirect' => route('plans.subscribe_3d_stripe',['plan'=> $plan->id,'user'=>auth()->user()->id])]);
+                return redirect($paymentRedirect);
             }
         } elseif (config('settings.subscription_processor') == 'Paystack') {
             $paystack = new Paystack();

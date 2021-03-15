@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class ClientController extends Controller
 {
@@ -32,13 +31,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        if (auth()->user()->hasRole('admin')) {
-            return view('clients.create');
-
-        } else {
-            return redirect()->back()->withStatus(__('Permission Denied'));
-        }
-
+        //
     }
 
     /**
@@ -49,16 +42,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $user= new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->password = Hash::make('chowkbd');
-        $user->assignRole('client');
-
-        //dd($user);
-        $user->save();
-        return redirect()->route('clients.index')->withStatus(__('Customer successfully created.'));
+        //
     }
 
     /**

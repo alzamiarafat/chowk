@@ -3,12 +3,15 @@
 namespace App;
 
 use App\MyModel;
+use App\Traits\HasConfig;
 use willvincent\Rateable\Rateable;
 
 class Restorant extends MyModel
 {
     use Rateable;
+    use HasConfig;
 
+    protected $modelName="App\Restorant";
     protected $fillable = ['name', 'subdomain', 'user_id', 'lat', 'lng', 'address', 'phone', 'logo', 'description', 'city_id'];
     protected $appends = ['alias', 'logom', 'icon', 'coverm'];
     protected $imagePath = '/uploads/restorants/';
@@ -75,19 +78,15 @@ class Restorant extends MyModel
         return $this->hasMany(\App\Categories::class, 'restorant_id', 'id')->where(['categories.active' => 1]);
     }
 
-   
-    
     public function localmenus()
     {
         return $this->hasMany(\App\Models\LocalMenu::class, 'restaurant_id', 'id');
     }
 
-    
     public function hours()
     {
         return $this->hasOne(\App\Hours::class, 'restorant_id', 'id');
     }
-
 
     public function tables()
     {

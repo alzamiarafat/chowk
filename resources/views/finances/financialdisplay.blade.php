@@ -43,12 +43,11 @@
         {{ $order->created_at->format(config('settings.datetime_display_format')) }}
     </td>
     <td class="table-web">
-        @if ($order->delivery_method==1)
-            <span class="badge badge-primary badge-pill">{{ __('Delivery') }} | {{ __($order->payment_method) }} </span>
+        @if(config('app.isft') || config('app.iswp'))
+            <span class="badge badge-primary badge-pill">{{ $order->getExpeditionType() }} | {{ __($order->payment_method) }} </span>
         @else
-            <span class="badge badge-success badge-pill">{{ __('Pickup') }} | {{ __($order->payment_method) }}</span>
+            <span class="badge badge-primary badge-pill">{{ $order->getExpeditionType() }} | {{ __($order->payment_method) }} </span>
         @endif
-
     </td>
     
     <td class="table-web">

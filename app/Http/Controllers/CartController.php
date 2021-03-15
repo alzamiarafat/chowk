@@ -103,6 +103,28 @@ class CartController extends Controller
 
     public function cart()
     {
+
+        $fieldsToRender=[];
+        if(strlen(config('global.order_fields'))>10){
+            $fields=json_decode(config('global.order_fields'),true);
+            //dd($fields);
+            if($fields){
+                foreach ($fields as $key => $field) {
+                    array_push($fieldsToRender, [
+                        'ftype'=>isset($field['ftype']) ? $field['ftype'] : 'input',
+                        'type'=>isset($field['type']) ? $field['type'] : 'text',
+                        'id'=>'custom['.$field['key'].']',
+                        'name'=>isset($field['title']) && $field['title'] != '' ? $field['title'] : $field['key'],
+                        'placeholder'=>isset($field['placeholder']) ? $field['placeholder'] : '',
+                        'value'=>isset($field['value']) ? $field['value'] : "",
+                        'required'=>false,
+                        'data'=>isset($field['data']) ? $field['data'] : [],
+                     ]);
+                }
+            }
+           
+            
+        }
         $isEmpty = false;
         if (Cart::getContent()->isEmpty()) {
             $isEmpty = true;
@@ -170,6 +192,7 @@ class CartController extends Controller
                 'openingTime' => $restaurant->hours && $restaurant->hours[$ourDateOfWeek.'_from'] ? $openingTime : null,
                 'closingTime' => $restaurant->hours && $restaurant->hours[$ourDateOfWeek.'_to'] ? $closingTime : null,
                 'addresses' => $addresses,
+                'fieldsToRender'=>$fieldsToRender
             ];
 
             return view('cart')->with($params);

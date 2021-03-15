@@ -24,12 +24,41 @@ trait HasPayPal
     }
 
     public function payOrder(){
+
+        //System setup 
+        $client_id=config('services.paypal.client_id');
+        $secret=config('services.paypal.secret');
+        $mode=config('services.paypal.mode');
+
+        //Setup based on vendor
+        $PayPalClientId=$this->vendor->getConfig('paypal_client_id');
+        if($PayPalClientId&&strlen($PayPalClientId)>5){
+            $client_id=$PayPalClientId;
+            $secret=$this->vendor->getConfig('paypal_secret','');
+            $mode=$this->vendor->getConfig('paypal_mode','sandbox');
+        }
+
         $apiContext = new ApiContext(
             new OAuthTokenCredential(
-                config('services.paypal.client_id'),
-                config('services.paypal.secret')
+                $client_id,
+                $secret
             )
         );
+
+        $apiContext->setConfig(
+            array(
+                'mode' => $mode,
+                //'log.LogEnabled' => true,
+                //'log.FileName' => '../PayPal.log',
+                //'//log.LogLevel' => 'DEBUG', // PLEASE USE `INFO` LEVEL FOR LOGGING IN LIVE ENVIRONMENTS
+                //'cache.enabled' => true,
+                //'cache.FileName' => '/PaypalCache' // for determining paypal cache directory
+                // 'http.CURLOPT_CONNECTTIMEOUT' => 30
+                // 'http.headers.PayPal-Partner-Attribution-Id' => '123123123'
+                //'log.AdapterFactory' => '\PayPal\Log\DefaultLogFactory' // Factory class implementing \PayPal\Log\PayPalLogFactory
+            )
+        );
+
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
 
